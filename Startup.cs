@@ -59,7 +59,11 @@ public class Startup
 
         // --- 2. BASE DE DATOS ---
         string connectionString = Configuration["ConnectionStrings:DefaultConnection"];
-        services.AddDbContext<NexusContext>(options => options.UseMySQL(connectionString));
+        services.AddDbContext<NexusContext>(options =>
+        {
+            options.UseMySQL(connectionString);
+            options.ReplaceService<Microsoft.EntityFrameworkCore.Infrastructure.IModelCustomizer, ApiNexusERP.Helpers.DateOnlyModelCustomizer>();
+        });
 
         // --- 3. INYECCIONES PARA EL HELPER ---
         services.AddHttpContextAccessor();
